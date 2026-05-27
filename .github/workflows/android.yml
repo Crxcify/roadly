@@ -34,6 +34,12 @@ jobs:
         run: npm ci
 
       - name: Build Web App
+        env:
+          VITE_SUPABASE_PROJECT_ID: "gnjagxdjufbpznpqblsy"
+          VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduamFneGRqdWZicHpucHFibHN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NDYxNzIsImV4cCI6MjA5NTAyMjE3Mn0.4XmI-1HhCNYQDQSmXNDkH5BwtEexpQEv-AYhVRrQD5c"
+          VITE_SUPABASE_URL: "https://gnjagxdjufbpznpqblsy.supabase.co"
+          VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY: "AIzaSyBmvJph4LmrbtW7skeczzpBIyb9WWzFKo4"
+          VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID: "e97ded5a694af9cf797888df3970143e"
         run: npm run build
 
       - name: Generate Offline HTML
@@ -53,7 +59,6 @@ jobs:
               ${CSS_FILE:+<link rel="stylesheet" href="/$CSS_FILE" />}
             </head>
             <body>
-              <div id="root"></div>
               <script type="module" src="/$JS_FILE"></script>
             </body>
           </html>
