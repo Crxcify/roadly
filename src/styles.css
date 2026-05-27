@@ -1,0 +1,105 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 1rem;
+
+  /* Roadly — dark navy with electric green */
+  --background: oklch(0.16 0.015 240);
+  --foreground: oklch(0.98 0.005 240);
+
+  --surface: oklch(0.21 0.018 240);
+  --surface-2: oklch(0.25 0.02 240);
+
+  --card: oklch(0.21 0.018 240);
+  --card-foreground: oklch(0.98 0.005 240);
+  --popover: oklch(0.21 0.018 240);
+  --popover-foreground: oklch(0.98 0.005 240);
+
+  --primary: oklch(0.82 0.21 150);
+  --primary-foreground: oklch(0.18 0.02 240);
+
+  --secondary: oklch(0.28 0.02 240);
+  --secondary-foreground: oklch(0.98 0.005 240);
+  --muted: oklch(0.26 0.018 240);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.3 0.025 240);
+  --accent-foreground: oklch(0.98 0.005 240);
+
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.98 0.005 240);
+  --success: oklch(0.82 0.21 150);
+  --warning: oklch(0.82 0.17 75);
+
+  --border: oklch(0.3 0.02 240);
+  --input: oklch(0.3 0.02 240);
+  --ring: oklch(0.82 0.21 150);
+}
+
+.dark {
+  --background: oklch(0.16 0.015 240);
+  --foreground: oklch(0.98 0.005 240);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body, #root { height: 100%; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: color-mix(in oklab, var(--surface) 85%, transparent);
+    backdrop-filter: blur(12px);
+  }
+  .ring-glow {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+                0 10px 30px -10px color-mix(in oklab, var(--primary) 35%, transparent);
+  }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { scrollbar-width: none; }
+}

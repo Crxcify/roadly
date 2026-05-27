@@ -1,0 +1,73 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NPM Dependencies
+        run: npm ci
+
+      - name: Build Web App
+        run: npm run build
+
+      - name: Generate Offline HTML
+        run: |
+          cd dist/client
+          JS_FILE=$(ls assets/index-*.js | head -n 1)
+          CSS_FILE=$(ls assets/styles-*.css 2>/dev/null | head -n 1 || echo "")
+          if [ -z "$CSS_FILE" ]; then CSS_FILE=$(ls assets/index-*.css 2>/dev/null | head -n 1 || echo ""); fi
+          
+          cat <<EOF > index.html
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+              <title>Roadly</title>
+              ${CSS_FILE:+<link rel="stylesheet" href="/$CSS_FILE" />}
+            </head>
+            <body>
+              <div id="root"></div>
+              <script type="module" src="/$JS_FILE"></script>
+            </body>
+          </html>
+          EOF
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build Release APK
+        working-directory: android
+        run: ./gradlew assembleRelease
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
